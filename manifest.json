@@ -1,0 +1,20 @@
+{
+	"manifest_version": 2,
+	"name": "Style Validator",
+	"description": "Validates the current User Guide Article based off of the rules in the Style Guide.",
+	"permissions": ["tabs","activeTab"],
+	"version": "1.2",
+	
+	"browser_action": {
+		"default_icon": "106666430.jpg",
+		"default_popup": "popup.html"
+  },
+	"content_scripts": [
+		{
+			"matches": ["http://*/*"],
+			"js": ["content.js"],
+			"run_at": "document_end"
+		}
+	]
+  
+}
