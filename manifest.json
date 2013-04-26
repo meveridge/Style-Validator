@@ -6,9 +6,13 @@
 	"version": "1.2",
 	
 	"browser_action": {
-		"default_icon": "106666430.jpg",
+		"default_icon": "sugar_check_1.png",
 		"default_popup": "popup.html"
-  },
+  	},
+  	"_execute_page_action": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+E"
+	},
 	"content_scripts": [
 		{
 			"matches": ["http://*/*"],
