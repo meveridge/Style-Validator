@@ -1,3 +1,10 @@
+
+/**
+ * Checks content for instanes of word, word precceded by a space, and word preceeded by a >.
+ * @param content = haystack
+ * @param word = needle
+ * @return int
+*/
 function checkContent(content,word){
 	var check = -1;
 	check =	content.indexOf(word);
@@ -7,28 +14,30 @@ function checkContent(content,word){
 	return check;
 }
 
+/**
+ * Replaces characters (&, >, <, ") with HTML entities
+ * @param str = String to replace characters
+ * @return string 
+*/
 function htmlEntities(str) {
     return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
 
 chrome.extension.onMessage.addListener(function(request, sender, sendResponse){
-	//todo:: change hello greeting to something better....
-	if(request.greeting == "hello"){
+	if(request.action == "runValidate"){
 		
-		//
-		
-		//todo:: change title references to something better
 		var validateResults = "";
 		var wordListResults = "";
 		var wordListCount = 0;
 		var content = "";
 		var contentList = new Array();
 		var resultArr = new Array();
-		//todo:: set proper words
+		//todo:: create hyperlinks to auto-perform a find for the selected word
 		var wordList = new Array(
 			"doesn't",
 			"can't",
 			"you'll",
+			"won't",
 			"ondemand",
 			"on demand",
 			"onsite",
@@ -47,9 +56,79 @@ chrome.extension.onMessage.addListener(function(request, sender, sendResponse){
 			"sub panel",
 			"i ",
 			"overview of",
-			"why are",
-			"<p>&nbsp;</p>"
+			"go to",
+			"<p>&nbsp;</p>",
+			"color:",
+			"font-family:",
+			"font-size:",
+			"<u>",
+			"<i>",
+			"<p><img",
+			".  ",
+			"?  ",
+			"!  ",
+			"cellpadding=\"1\""
 		);
+		
+		//each index of this array matches with an index from wordList and the value matches an index from responseList
+		var responseMapping = new Array(
+			0,
+			0,
+			0,
+			0,
+			1,
+			1,
+			2,
+			2,
+			3,
+			3,
+			4,
+			4,
+			5,
+			5,
+			6,
+			6,
+			7,
+			7,
+			8,
+			8,
+			9,
+			10,
+			11,
+			12,
+			13,
+			13,
+			13,
+			13,
+			13,
+			14,
+			15,
+			15,
+			15,
+			16
+		);
+		
+		var responseList = new Array(
+			"Avoid contractions.",
+			"Should be on-demand.",
+			"Should be on-site.",
+			"Should be dropdown.",
+			"Should be plug-in.",
+			"Should be web-to-lead.",
+			"Should be email.",
+			"Should be user name.",
+			"Should be subpanel.",
+			"First person is only used in the plural form (we).",
+			"Should be introduction to.",
+			"Should be navigate to.",
+			"No instances should appear in text source.",
+			"No text formatting.",
+			"No spaces separating images and text.",
+			"Single space after punctuation.",
+			"Table cellpadding needs to be 4."
+		);
+		
+
 		
 		//
 		
@@ -103,7 +182,8 @@ chrome.extension.onMessage.addListener(function(request, sender, sendResponse){
 			for(i=0;i<wordList.length;i++){
 				if(resultArr[i]>0){
 					wordListCount = wordListCount + 1;
-					wordListResults = wordListResults + "[" + htmlEntities(wordList[i]) + "] = " + resultArr[i] + "<br>";
+					wordListResults = wordListResults + "<a title='" + responseList[responseMapping[i]] + "'>[" + htmlEntities(wordList[i]) + "] = " + resultArr[i] + "</a><br>";
+					//wordListResults = wordListResults + "&nbsp;&nbsp;&nbsp;--> " + responseList[responseMapping[i]] + "<br>";
 				}
 			}
 			
