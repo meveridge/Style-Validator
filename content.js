@@ -11,6 +11,8 @@ function checkContent(content,word){
 	if(check < 0) check = content.indexOf(" " + word);
 	if(check < 0) check = content.indexOf(">" + word);
 	
+	//todo:: add regex check for valid characters preceeding the found word. then we can add i back in since it is currently finding API...
+	
 	return check;
 }
 
@@ -57,7 +59,6 @@ chrome.extension.onMessage.addListener(function(request, sender, sendResponse){
 			"overview of",
 			"go to",
 			"<p>&nbsp;</p>",
-			"color:",
 			"font-family:",
 			"font-size:",
 			"<u>",
@@ -94,7 +95,6 @@ chrome.extension.onMessage.addListener(function(request, sender, sendResponse){
 			10,
 			11,
 			12,
-			13,
 			13,
 			13,
 			13,
